@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  proxy:
+    build: .
+    ports:
+      - "8090:8090"
+    environment:
+      # Proxy configuration
+      - PORT=8090
+      - ORIGIN_URL=http://host.docker.internal:8080
+      - READ_TIMEOUT=10s
+      - WRITE_TIMEOUT=10s
+
+      # ExperiFlow API configuration
+      - EXPERIFLOW_API_URL=http://host.docker.internal:8000
+      - EXPERIFLOW_EDGE_TOKEN=${EXPERIFLOW_EDGE_TOKEN:-}
+      - TRANSFORM_TIMEOUT=50ms
+
+      # Experiments to activate
+      - EXPERIMENT_IDS=54ce9030-4da3-4866-8b25-6d956207f325
+
+      # Feature flags
+      - FAIL_OPEN=true
+      - ENABLE_LOGGING=true
+      - ENABLE_METRICS=true
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    restart: unless-stopped
