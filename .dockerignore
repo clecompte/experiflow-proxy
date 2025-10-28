@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Build artifacts
+proxy
+*.exe
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+!.env.production.template
+
+# Test files
+*_test.go
+
+# Misc
+.DS_Store
