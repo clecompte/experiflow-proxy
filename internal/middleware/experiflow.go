@@ -80,14 +80,20 @@ func (m *ExperiFlowMiddleware) applyExperiment(resp *http.Response, req *http.Re
 
 	// 2. Set cookie if new assignment
 	if isNew {
-		http.SetCookie(resp, &http.Cookie{
+		cookie := &http.Cookie{
 			Name:     cookieName,
 			Value:    variantID,
 			MaxAge:   30 * 24 * 60 * 60, // 30 days
 			Path:     "/",
 			HttpOnly: true,
 			SameSite: http.SameSiteLaxMode,
-		})
+		}
+		// Add cookie to response headers
+		if resp.Header.Get("Set-Cookie") == "" {
+			resp.Header.Set("Set-Cookie", cookie.String())
+		} else {
+			resp.Header.Add("Set-Cookie", cookie.String())
+		}
 	}
 
 	// 3. Fetch transform spec
